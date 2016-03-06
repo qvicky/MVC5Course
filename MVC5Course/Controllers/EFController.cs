@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using MVC5Course.Models;
 using System.Data.Entity.Validation;
+using System.Data.Entity;
 
 namespace MVC5Course.Controllers
 {
@@ -100,6 +101,22 @@ namespace MVC5Course.Controllers
 
             return View(db.vwClientOrder.ToList());
         }
+        public ActionResult QueryPlan(int num) {
+            //效能調校 : Include 預先載入
+            //var data = db.Product.Include("OrderLine").
+            //                         OrderBy(p => p.ProductId).
+            //                         AsQueryable();
 
+            //強型別
+            var data = db.Product.Include(p => p.OrderLine).
+                                    OrderByDescending(p => p.ProductId).
+                                    AsQueryable();
+
+//            var data = db.Database.SqlQuery<Product>(@"
+//                                select * from dbo.Product p where p.ProductId < @p0", num);
+
+
+            return View(data);
+        }
     }
 }
