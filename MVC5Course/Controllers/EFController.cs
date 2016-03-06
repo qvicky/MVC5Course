@@ -96,6 +96,10 @@ namespace MVC5Course.Controllers
             return RedirectToAction("index");
         }
 
+        public ActionResult ClientOrder() {
+
+            return View(db.vwClientOrder.ToList());
+        }
 
     }
 }

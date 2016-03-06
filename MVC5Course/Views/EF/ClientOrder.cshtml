@@ -1,0 +1,57 @@
+﻿@model IEnumerable<MVC5Course.Models.vwClientOrder>
+
+@{
+    ViewBag.Title = "ClientOrder";
+}
+
+<h2>ClientOrder</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.firstname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lastname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.orderdate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ordertotal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.orderstatus)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.firstname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.lastname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.orderdate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ordertotal)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.orderstatus)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.clientid }) |
+            @Html.ActionLink("Details", "Details", new { id=item.clientid }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.clientid })
+        </td>
+    </tr>
+}
+
+</table>
