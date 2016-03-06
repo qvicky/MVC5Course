@@ -10,54 +10,92 @@ namespace MVC5Course.Controllers
 {
     public class EFController : Controller
     {
+        FabricsEntities db = new FabricsEntities();
         // GET: EF
-        public ActionResult Index()
+        public ActionResult Index(bool? IsActive, string keyword)
         {
-            var db = new FabricsEntities();
+            //var db = new FabricsEntities();
 
-            db.Product.Add(new Product() {
-                ProductName = "test123",
-                Price = 3,
-                Stock = 1,
-                Active = true
-            });
+            //db.Product.Add(new Product() {
+            //    ProductName = "test123",
+            //    Price = 3,
+            //    Stock = 1,
+            //    Active = true
+            //});
 
-            try {
-                db.SaveChanges();
+            //Product newProduct = new Product() {
+            //    ProductName = "test456",
+            //    Price = 3,
+            //    Stock = 1,
+            //    Active = true
+            //};
+            //db.Product.Add(newProduct);
+
+            //try {
+            //    db.SaveChanges();
+            //}
+            //catch (DbEntityValidationException ex) {
+            //    foreach (DbEntityValidationResult item in ex.EntityValidationErrors) {
+            //        string entityName = item.Entry.Entity.GetType().Name;
+
+            //        foreach (DbValidationError err in item.ValidationErrors) {
+            //            throw new Exception(entityName + " 類型驗證失敗 : " + err.ErrorMessage);
+            //        }
+            //    }
+            //    throw;
+            //}
+            //catch (Exception ex) {
+            //    throw;
+            //}
+            //var pkey=newProduct.ProductId;
+            //var data = db.Product.OrderByDescending(p=>p.ProductId);
+
+            //var data = db.Product.Where(p => p.Active.HasValue ? p.Active.Value == IsActive : false).OrderByDescending(p => p.ProductId);
+            var data = db.Product.OrderByDescending(p => p.ProductId).AsQueryable();
+
+            if (IsActive.HasValue) {
+                data = data.Where(p => p.Active.HasValue ? p.Active.Value == IsActive : false);
             }
-            catch (DbEntityValidationException ex) {
-                foreach (DbEntityValidationResult item in ex.EntityValidationErrors) {
-                    string entityName = item.Entry.Entity.GetType().Name;
 
-                    foreach (DbValidationError err in item.ValidationErrors) {
-                        throw new Exception(entityName + " 類型驗證失敗 : " + err.ErrorMessage);
-                    }
-                }
-                throw;
-            }
-            catch (Exception ex) {
-                
-                throw;
+            if (!string.IsNullOrEmpty(keyword)) {
+                data = data.Where(p => p.ProductName.Contains(keyword));
             }
 
-             var data = db.Product.ToList();
+            //更新資料
+            //foreach (Product item in data) {
+            //    item.Price = item.Price + 1;
+            //}
+            //db.SaveChanges();
 
             return View(data);
         }
-        public ActionResult CustomerOrder() {
-            var db = new FabricsEntities();
-            var query = (from o in db.Order
-                         join c in db.Client on o.ClientId equals c.ClientId
-                         select new {
-                             c.FirstName,
-                             c.LastName,
-                             o.OrderDate,
-                             o.OrderTotal,
-                             o.OrderStatus
-                         });
 
-            return View(query);
+        public ActionResult Detail(int id) {
+            //var product = db.Product.Find(id);
+            var product = db.Product.Where(p => p.ProductId == id).FirstOrDefault();
+
+            return View(product);
         }
+
+        public ActionResult Delete(int id) {
+            var product = db.Product.Find(id);  //找到刪除的資料
+
+            //foreach (var ol in db.OrderLine.Where(p=>p.ProductId ==id).ToList()) {
+            //    db.OrderLine.Remove(ol);
+            //}
+
+            //foreach (var ol in product.OrderLine.ToList()) {
+            //    db.OrderLine.Remove(ol);
+            //}
+
+            db.OrderLine.RemoveRange(product.OrderLine);
+            db.Product.Remove(product);
+
+            db.SaveChanges();
+
+            return RedirectToAction("index");
+        }
+
 
     }
 }

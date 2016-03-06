@@ -25,7 +25,7 @@ namespace MVC5Course.Models
         [Required(ErrorMessage="產品名稱必填")]
         public string ProductName { get; set; }
         [Required(ErrorMessage="價格必填")]       
-        [Range(2,99, ErrorMessage="價格比須介於2~99")]
+        //[Range(2,99, ErrorMessage="價格比須介於2~99")]
         public Nullable<decimal> Price { get; set; }
         [Required]
         public Nullable<bool> Active { get; set; }
