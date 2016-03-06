@@ -112,8 +112,10 @@ namespace MVC5Course.Controllers
                                     OrderByDescending(p => p.ProductId).
                                     AsQueryable();
 
+            //自訂SQL statment
 //            var data = db.Database.SqlQuery<Product>(@"
 //                                select * from dbo.Product p where p.ProductId < @p0", num);
+
 
 
             return View(data);
