@@ -19,7 +19,7 @@ namespace MVC5Course
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            //清除webform view engine 
+            //減少搜尋 View 檔案的時間 
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
 

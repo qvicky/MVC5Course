@@ -4,4 +4,40 @@
 }
 
 <h2>Index</h2>
+<div>
+    <button id="btnJsonTest">取得Json test資料</button>
+    <hr />
 
+    @* table.table>tr*2>td*5 *@
+    <table class="table">
+        <tr>
+            <td>ProductId</td>
+            <td>ProductName</td>
+            <td>Price</td>
+            <td>Stock</td>
+            <td>Active</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+</div>
+
+@section Scripts {
+<script src="~/Scripts/angular.js"></script>
+    <script>
+
+
+
+        $('#btnJsonTest').bind('click', function () {
+            $.getJSON('/AR/JsonTest','',function (data) {
+                console.log(data);
+            })
+        });
+    </script>
+}
