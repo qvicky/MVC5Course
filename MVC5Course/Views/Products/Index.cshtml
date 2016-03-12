@@ -30,27 +30,30 @@
             <th></th>
         </tr>
         @{
-        var data = Model.ToArray();
+            //products變數名稱要跟Controller傳入參數相同
+            var products = Model.ToArray();
         }
 
-        @for (int i = 0; i < data.Length; i++)
+        @for (int i = 0; i < products.Length; i++)
         {
-            @Html.HiddenFor(modelItem =>data[i].ProductId)
+            @Html.HiddenFor(modelItem => products[i].ProductId)
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => data[i].ProductName)
+                    @Html.DisplayFor(modelItem => products[i].ProductName)
                 </td>
                 <td>
-                    @Html.EditorFor(modelItem => data[i].Price)
+                    @Html.EditorFor(modelItem => products[i].Price)<br />
+                    @Html.ValidationMessageFor(modelItem => products[i].Price, "", new { @class = "text-danger" })
                 </td>
                 @*<td>@Html.DisplayFor(modelItem => data[i].Active)</td>*@
                 <td>
-                    @Html.EditorFor(modelItem => data[i].Stock)
+                    @Html.EditorFor(modelItem => products[i].Stock)<br />
+                    @Html.ValidationMessageFor(modelItem => products[i].Stock,"", new { @class = "text-danger" })
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = data[i].ProductId }) |
-                    @Html.ActionLink("Details", "Details", new { id = data[i].ProductId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = data[i].ProductId })
+                    @Html.ActionLink("Edit", "Edit", new { id = products[i].ProductId }) |
+                    @Html.ActionLink("Details", "Details", new { id = products[i].ProductId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = products[i].ProductId })
                 </td>
             </tr>
              }

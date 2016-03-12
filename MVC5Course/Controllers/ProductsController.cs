@@ -8,17 +8,14 @@ using System.Web;
 using System.Web.Mvc;
 using MVC5Course.Models;
 
-namespace MVC5Course.Controllers
-{
-    public class ProductsController : BaseController
-    {
+namespace MVC5Course.Controllers {
+    public class ProductsController : BaseController {
         //private FabricsEntities db = new FabricsEntities();
         //ProductRepository repo = RepositoryHelper.GetProductRepository();
 
         // GET: Products
-        public ActionResult Index()
-        {
-          // var data =  repo.All().Where(p => !p.IsDeleted);    
+        public ActionResult Index() {
+            // var data =  repo.All().Where(p => !p.IsDeleted);    
             //var data = repo.All();
             var data = repo.All(true).Take(5);
 
@@ -28,37 +25,36 @@ namespace MVC5Course.Controllers
             return View(data);
         }
         [HttpPost]
-        public ActionResult Index(IList<Product> data) {
-            foreach (var item in data) {
-                var product = repo.Find(item.ProductId);
-                product.Stock = item.Stock;
-                product.Price = item.Price;
+        public ActionResult Index(IList<Products批次更新ViewModel> products) {
+            //public ActionResult Index(Product[] products) {
+            if (ModelState.IsValid) {
+                foreach (var item in products) {
+                    var product = repo.Find(item.ProductId);
+                    product.Stock = item.Stock;
+                    product.Price = item.Price;
+                }
+                repo.UnitOfWork.Commit();
+                return RedirectToAction("Index");
             }
-            repo.UnitOfWork.Commit();
-
-            return RedirectToAction("Index");
+            return View(repo.All().Take(5));
         }
         // GET: Products/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
+        public ActionResult Details(int? id) {
+            if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Product product = repo.Find(id.Value);
-            if (product == null && product.IsDeleted)
-            {
+            if (product == null && product.IsDeleted) {
                 return HttpNotFound();
             }
             //ViewData[""] == product.OrderLine.ToList();
-            
+
 
             return View(product);
         }
 
         // GET: Products/Create
-        public ActionResult Create()
-        {
+        public ActionResult Create() {
             return View();
         }
 
@@ -67,10 +63,8 @@ namespace MVC5Course.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProductId,ProductName,Price,Active,Stock")] Product product)
-        {
-            if (ModelState.IsValid)
-            {
+        public ActionResult Create([Bind(Include = "ProductId,ProductName,Price,Active,Stock")] Product product) {
+            if (ModelState.IsValid) {
                 repo.Add(product);
                 repo.UnitOfWork.Commit();
                 //db.Product.Add(product);
@@ -82,15 +76,12 @@ namespace MVC5Course.Controllers
         }
 
         // GET: Products/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
+        public ActionResult Edit(int? id) {
+            if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Product product = repo.Find(id.Value);
-            if (product == null)
-            {
+            if (product == null) {
                 return HttpNotFound();
             }
             return View(product);
@@ -101,30 +92,38 @@ namespace MVC5Course.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProductId,ProductName,Price,Active,Stock")] Product product)
-        {
-            if (ModelState.IsValid)
+        public ActionResult Edit(int id, FormCollection form) {
+            //Include 裡的欄位都會被Bind
+            //Exclude 裡的欄位不會被Bind
+            Product product = repo.Find(id);
+            //延遲驗證
+            if (TryUpdateModel<Product>(product, new string[] {
+                 "ProductId", "ProductName", "Price", "Active", "Stock" }))
             {
-                var db = (FabricsEntities)repo.UnitOfWork.Context;
-                db.Entry(product).State = EntityState.Modified;
-                db.SaveChanges();
-
+                repo.UnitOfWork.Commit();
                 TempData["ProductsEditDoneMsg"] = "商品編輯成功 !!";
                 return RedirectToAction("Index");
             }
+
+            //預先驗證
+            //if (ModelState.IsValid) {
+            //    var db = (FabricsEntities)repo.UnitOfWork.Context;
+            //    db.Entry(product).State = EntityState.Modified;
+            //    db.SaveChanges();
+
+            //    TempData["ProductsEditDoneMsg"] = "商品編輯成功 !!";
+            //    return RedirectToAction("Index");
+            //}
             return View(product);
         }
 
         // GET: Products/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
+        public ActionResult Delete(int? id) {
+            if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Product product = repo.Find(id.Value);
-            if (product == null)
-            {
+            if (product == null) {
                 return HttpNotFound();
             }
             return View(product);
@@ -133,8 +132,7 @@ namespace MVC5Course.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
+        public ActionResult DeleteConfirmed(int id) {
             Product product = repo.Find(id);
             product.IsDeleted = true;
             repo.UnitOfWork.Commit();
@@ -143,10 +141,8 @@ namespace MVC5Course.Controllers
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
+        protected override void Dispose(bool disposing) {
+            if (disposing) {
                 var db = (FabricsEntities)repo.UnitOfWork.Context;
                 db.Dispose();
             }
