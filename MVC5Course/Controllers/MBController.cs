@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MVC5Course.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,17 +16,23 @@ namespace MVC5Course.Controllers
         }
         //以下二者擇一
        //(強型別)
-        [HttpPost]
-        public ActionResult Index(string Name, DateTime Birthday) {
-            //傳入的參數名稱要跟view的一樣
-            return Content(Name + " " + Birthday);
-        }
+        //[HttpPost]
+        //public ActionResult Index(string Name, DateTime Birthday) {
+        //    //傳入的參數名稱要跟view的一樣
+        //    return Content(Name + " " + Birthday);
+        //}
+
         //弱型別
         //[HttpPost]
         //public ActionResult Index(FormCollection form) {
         //    return Content(form["Name"] + " " + form["Birthday"]);
         //}
 
+        //複雜模型繫結
+        [HttpPost]
+        public ActionResult Index(MemberViewModel memberViewModel) {
+            return Content(memberViewModel.Name + " " + memberViewModel.Birthday);
+        }
 
 
     }

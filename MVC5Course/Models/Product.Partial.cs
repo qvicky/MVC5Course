@@ -15,7 +15,7 @@ namespace MVC5Course.Models
         public int ProductId { get; set; }
 
         [StringLength(80, ErrorMessage="欄位長度不得大於 80 個字元")]
-        [此欄位必須至少出現一個空白字元(ErrorMessage = "此欄位必須至少出現一個空白字元")]  //自訂檢查規則
+        //[此欄位必須至少出現一個空白字元(ErrorMessage = "此欄位必須至少出現一個空白字元")]  //自訂檢查規則
         [Required(ErrorMessage = "必填欄位")]
         public string ProductName { get; set; }
         public Nullable<decimal> Price { get; set; }

@@ -20,14 +20,24 @@ namespace MVC5Course.Controllers
         {
           // var data =  repo.All().Where(p => !p.IsDeleted);    
             //var data = repo.All();
-            var data = repo.All(true);
+            var data = repo.All(true).Take(5);
 
             //共用同一個UnitOfWork (當有一個Repository以上)
             //var repoOL = RepositoryHelper.GetOrderLineRepository(repo.UnitOfWork);
 
             return View(data);
         }
+        [HttpPost]
+        public ActionResult Index(IList<Product> data) {
+            foreach (var item in data) {
+                var product = repo.Find(item.ProductId);
+                product.Stock = item.Stock;
+                product.Price = item.Price;
+            }
+            repo.UnitOfWork.Commit();
 
+            return RedirectToAction("Index");
+        }
         // GET: Products/Details/5
         public ActionResult Details(int? id)
         {
