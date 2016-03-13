@@ -1,20 +1,21 @@
 ﻿@model Int32[]
 
-@Model
 
 @foreach (var i in Model) {
     @i
 }
-<br />
+
 @foreach (var i in Model) {
     string j = " ";
-    //j = i.ToString() + j;
     j+=i.ToString();
-    @j    
+    @j
+    
+    @*@(i+ " ");*@
 }
-<br />
+
 <ul>
     @foreach (var i in Model) {
-        <li>@i</li>
+    <li>@i</li>
     }
 </ul>
+
