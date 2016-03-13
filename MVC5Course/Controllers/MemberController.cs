@@ -1,4 +1,8 @@
-﻿using MVC5Course.Models;
+﻿/*修改 web.config 
+ * <authentication mode="Forms"> 修改mode
+ * <remove name="FormsAuthentication" /> 註解
+ */
+using MVC5Course.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,10 +31,14 @@ namespace MVC5Course.Controllers
         }
 
         private bool CheckLogin(string username, string password) {
-            return (username == "vicky@mail.com" && password == "2222");
+            //Vicky:可以讀取db來驗證人員
+            return (
+                username == "vicky@mail.com" && 
+                password == "2222");
         }
         public ActionResult Logout() {
             FormsAuthentication.SignOut();
+
             return RedirectToAction("Index", "Home");
         }
     }
