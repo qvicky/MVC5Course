@@ -34,6 +34,7 @@ namespace MVC5Course.Controllers
         [HandleError(ExceptionType=typeof(ArgumentException), View="ErrorArgument")]
         [HandleError(ExceptionType=typeof(SqlException), View="ErrorSql")]
         public ActionResult ErrorTest(string e) {
+            //先找所屬Controller下View的Error頁面，如果沒有就去找Shared
             if (e == "1") {
                 throw new Exception("Error 1");
             }
@@ -44,6 +45,10 @@ namespace MVC5Course.Controllers
             }
             return Content("No Error");
         }
-        
+        public ActionResult RazorTest() {
+            int[] data = new int[] { 1, 2, 3, 4, 5 };
+
+            return PartialView(data);
+        }
     }
 }
