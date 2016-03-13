@@ -193,6 +193,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MBController.cs" />
     <Compile Include="Controllers\MemberController.cs" />
+    <Compile Include="Controllers\NewLayoutController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="ActionFilters\共用的ViewBag資料共享部分Controller動作方法.cs" />
@@ -1359,6 +1360,9 @@
     <Content Include="Views\Home\Error.cshtml" />
     <Content Include="Views\Home\ErrorArgument.cshtml" />
     <Content Include="Views\Home\RazorTest.cshtml" />
+    <Content Include="Views\NewLayout\Index.cshtml" />
+    <Content Include="Views\NewLayout\_LayoutBootstrap.cshtml" />
+    <Content Include="Views\NewLayout\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
