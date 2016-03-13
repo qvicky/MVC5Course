@@ -95,10 +95,9 @@ namespace MVC5Course.Controllers {
         public ActionResult Edit(int id, FormCollection form) {
             //Include 裡的欄位都會被Bind
             //Exclude 裡的欄位不會被Bind
-            Product product = repo.Find(id);
+            IProducts product = repo.Find(id);
             //延遲驗證
-            if (TryUpdateModel<Product>(product, new string[] {
-                 "ProductId", "ProductName", "Price", "Active", "Stock" }))
+            if (TryUpdateModel<IProducts>(product))
             {
                 repo.UnitOfWork.Commit();
                 TempData["ProductsEditDoneMsg"] = "商品編輯成功 !!";
