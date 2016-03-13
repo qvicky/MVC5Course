@@ -5,7 +5,7 @@ namespace MVC5Course.Models
     using System.ComponentModel.DataAnnotations;
     
     [MetadataType(typeof(ProductMetaData))]
-    public partial class Product
+    public partial class Product : IProducts
     {
     }
     
@@ -13,7 +13,6 @@ namespace MVC5Course.Models
     {
         [Required]
         public int ProductId { get; set; }
-
         [StringLength(80, ErrorMessage="欄位長度不得大於 80 個字元")]
         //[此欄位必須至少出現一個空白字元(ErrorMessage = "此欄位必須至少出現一個空白字元")]  //自訂檢查規則
         [Required(ErrorMessage = "必填欄位")]

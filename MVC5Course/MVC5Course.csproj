@@ -56,6 +56,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Mvc, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.Futures.5.0.0\lib\net40\Microsoft.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -190,6 +194,8 @@
     <Compile Include="Controllers\MBController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="ActionFilters\共用的ViewBag資料共享部分Controller動作方法.cs" />
+    <Compile Include="ActionFilters\記錄Action的執行時間.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -230,6 +236,7 @@
       <DependentUpon>Fabrics.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\IProducts.cs" />
     <Compile Include="Models\IRepository.EF6.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
