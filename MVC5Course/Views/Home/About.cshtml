@@ -1,6 +1,10 @@
 ﻿@{
     ViewBag.Title = "About";
 }
+@section breadcrumb {
+    <li><a href="#">@ViewBag.Title</a></li>
+}
+
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3><br />
 <h3>@ViewBag.執行時間</h3>
