@@ -14,15 +14,30 @@ namespace MVC5Course.Controllers {
         //ProductRepository repo = RepositoryHelper.GetProductRepository();
 
         // GET: Products
-        public ActionResult Index() {
-            // var data =  repo.All().Where(p => !p.IsDeleted);    
+        public ActionResult Index(int? ProductId, string type, bool? isActive, string keyword) {
+            // var data =  repo.All().Where(p => !p.IsDeleted);
             //var data = repo.All();
-            var data = repo.All(true).Take(5);
+            var data = repo.All(true);
+
+            if (isActive.HasValue) {
+                data = data.Where(p=>p.Active.HasValue && p.Active.Value == isActive.Value);
+            }
+            var items = new List<SelectListItem>();
+            items.Add(new SelectListItem() {Value="true", Text="有效"});
+            items.Add(new SelectListItem(){Value="false", Text="無效"});
+            ViewData["isActive"] = new SelectList(items, "Value", "Text");
+
+            if (!string.IsNullOrEmpty(keyword)) {
+                data = data.Where(p => p.ProductName.Contains(keyword));
+            }
 
             //共用同一個UnitOfWork (當有一個Repository以上)
             //var repoOL = RepositoryHelper.GetOrderLineRepository(repo.UnitOfWork);
-
-            return View(data);
+            if (ProductId.HasValue) {
+                ViewBag.SelectedProductId = ProductId.Value;
+            }
+            ViewBag.type = type;
+            return View(data.Take(10));
         }
         [HttpPost]
         public ActionResult Index(IList<Products批次更新ViewModel> products) {

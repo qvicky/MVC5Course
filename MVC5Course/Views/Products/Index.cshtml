@@ -7,12 +7,19 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-@if (!String.IsNullOrEmpty(Convert.ToString(TempData["ProductsEditDoneMsg"]))) {
-    <h3>@TempData["ProductsEditDoneMsg"]</h3>
+@using (Html.BeginForm("Index", "Products", FormMethod.Get)) {
+    <p>
+        @Html.ActionLink("Create New", "Create")
+        @Html.DropDownList("isActive", null, "--是否有效--", new { onchange = "this.form.submit();" })
+        @Html.TextBox("keyword", null, new { onchange = "this.form.submit();" })
+
+
+        @if (!String.IsNullOrEmpty(Convert.ToString(TempData["ProductsEditDoneMsg"]))) {
+            <h3>@TempData["ProductsEditDoneMsg"]</h3>
+        }
+    </p>
 }
-</p>
+
 @using (Html.BeginForm()) {
     <table class="table">
         <tr>
@@ -22,21 +29,20 @@
             <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
-            @*<th>
+            <th>
                     @Html.DisplayNameFor(model => model.Active)
-                </th>*@
+                </th>
             <th>
                 @Html.DisplayNameFor(model => model.Stock)
             </th>
             <th></th>
         </tr>
         @{
-            //products變數名稱要跟Controller傳入參數相同
-            var products = Model.ToArray();
+    //products變數名稱要跟Controller傳入參數相同
+    var products = Model.ToArray();
         }
 
-        @for (int i = 0; i < products.Length; i++)
-        {
+        @for (int i = 0; i < products.Length; i++) {
             @Html.HiddenFor(modelItem => products[i].ProductId)
             <tr>
                 <td>
@@ -46,20 +52,24 @@
                     @Html.EditorFor(modelItem => products[i].Price)<br />
                     @Html.ValidationMessageFor(modelItem => products[i].Price, "", new { @class = "text-danger" })
                 </td>
-                @*<td>@Html.DisplayFor(modelItem => data[i].Active)</td>*@
+                <td>@Html.DisplayFor(modelItem => products[i].Active)</td>
                 <td>
                     @Html.EditorFor(modelItem => products[i].Stock)<br />
-                    @Html.ValidationMessageFor(modelItem => products[i].Stock,"", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(modelItem => products[i].Stock, "", new { @class = "text-danger" })
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = products[i].ProductId }) |
                     @Html.ActionLink("Details", "Details", new { id = products[i].ProductId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = products[i].ProductId })
+                    @Html.ActionLink("Delete", "Delete", new { id = products[i].ProductId }) |
+                    @Html.ActionLink("OrderLines", "Index", new { ProductId = products[i].ProductId })
                 </td>
             </tr>
-             }
+        }
 
     </table>
     <button class="btn btn-primary">批次更新</button>
-
+}
+<hr />
+@if (ViewBag.SelectedProductId != null) {
+    @Html.Action("Index", "OrderLines", new { ProductId = ViewBag.SelectedProductId })
 }

@@ -10,118 +10,112 @@ using MVC5Course.Models;
 
 namespace MVC5Course.Controllers
 {
-    public class OrderLinesController : Controller
+    public class ClientsController : Controller
     {
         private FabricsEntities db = new FabricsEntities();
 
-        // GET: OrderLines
-        [ChildActionOnly]  //設定不能單獨執行
-        public ActionResult Index(int ProductId)
+        // GET: Clients
+        public ActionResult Index()
         {
-            var orderLine = db.OrderLine.Include(o => o.Order).Include(o => o.Product).Where(p => p.ProductId == ProductId);
-            return View(orderLine.ToList());
+            var client = db.Client.Include(c => c.Occupation);
+            return View(client.Take(5).ToList());
         }
 
-      
-        // GET: OrderLines/Details/5
+        // GET: Clients/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            OrderLine orderLine = db.OrderLine.Find(id);
-            if (orderLine == null)
+            Client client = db.Client.Find(id);
+            if (client == null)
             {
                 return HttpNotFound();
             }
-            return View(orderLine);
+            return View(client);
         }
 
-        // GET: OrderLines/Create
+        // GET: Clients/Create
         public ActionResult Create()
         {
-            ViewBag.OrderId = new SelectList(db.Order, "OrderId", "OrderStatus");
-            ViewBag.ProductId = new SelectList(db.Product, "ProductId", "ProductName");
+            ViewBag.OccupationId = new SelectList(db.Occupation, "OccupationId", "OccupationName");
             return View();
         }
 
-        // POST: OrderLines/Create
+        // POST: Clients/Create
         // 若要免於過量張貼攻擊，請啟用想要繫結的特定屬性，如需
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "OrderId,LineNumber,ProductId,Qty,LineTotal")] OrderLine orderLine)
+        public ActionResult Create([Bind(Include = "ClientId,FirstName,MiddleName,LastName,Gender,DateOfBirth,CreditRating,XCode,OccupationId,TelephoneNumber,Street1,Street2,City,ZipCode,Longitude,Latitude,Notes")] Client client)
         {
             if (ModelState.IsValid)
             {
-                db.OrderLine.Add(orderLine);
+                db.Client.Add(client);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.OrderId = new SelectList(db.Order, "OrderId", "OrderStatus", orderLine.OrderId);
-            ViewBag.ProductId = new SelectList(db.Product, "ProductId", "ProductName", orderLine.ProductId);
-            return View(orderLine);
+            ViewBag.OccupationId = new SelectList(db.Occupation, "OccupationId", "OccupationName", client.OccupationId);
+            return View(client);
         }
 
-        // GET: OrderLines/Edit/5
+        // GET: Clients/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            OrderLine orderLine = db.OrderLine.Find(id);
-            if (orderLine == null)
+            Client client = db.Client.Find(id);
+            if (client == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.OrderId = new SelectList(db.Order, "OrderId", "OrderStatus", orderLine.OrderId);
-            ViewBag.ProductId = new SelectList(db.Product, "ProductId", "ProductName", orderLine.ProductId);
-            return View(orderLine);
+            ViewBag.OccupationId = new SelectList(db.Occupation, "OccupationId", "OccupationName", client.OccupationId);
+            return View(client);
         }
 
-        // POST: OrderLines/Edit/5
+        // POST: Clients/Edit/5
         // 若要免於過量張貼攻擊，請啟用想要繫結的特定屬性，如需
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "OrderId,LineNumber,ProductId,Qty,LineTotal")] OrderLine orderLine)
+        public ActionResult Edit([Bind(Include = "ClientId,FirstName,MiddleName,LastName,Gender,DateOfBirth,CreditRating,XCode,OccupationId,TelephoneNumber,Street1,Street2,City,ZipCode,Longitude,Latitude,Notes")] Client client)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(orderLine).State = EntityState.Modified;
+                db.Entry(client).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.OrderId = new SelectList(db.Order, "OrderId", "OrderStatus", orderLine.OrderId);
-            ViewBag.ProductId = new SelectList(db.Product, "ProductId", "ProductName", orderLine.ProductId);
-            return View(orderLine);
+            ViewBag.OccupationId = new SelectList(db.Occupation, "OccupationId", "OccupationName", client.OccupationId);
+            return View(client);
         }
 
-        // GET: OrderLines/Delete/5
+        // GET: Clients/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            OrderLine orderLine = db.OrderLine.Find(id);
-            if (orderLine == null)
+            Client client = db.Client.Find(id);
+            if (client == null)
             {
                 return HttpNotFound();
             }
-            return View(orderLine);
+            return View(client);
         }
 
-        // POST: OrderLines/Delete/5
+        // POST: Clients/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            OrderLine orderLine = db.OrderLine.Find(id);
-            db.OrderLine.Remove(orderLine);
+            Client client = db.Client.Find(id);
+            db.Client.Remove(client);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

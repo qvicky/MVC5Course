@@ -47,10 +47,9 @@
     </dl>
 </div>
 
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ProductId })     
+</p>
 @*@Html.Action("Index", "OrderLines", new { ProductId = Model.ProductId })*@
 
 @Html.Partial("../OrderLines/Index", Model.OrderLine)
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ProductId }) |
-    
-</p>
