@@ -1382,6 +1382,7 @@
     <Content Include="Views\Shared\DisplayTemplates\生日.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\CreditRating.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\性別.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
