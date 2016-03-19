@@ -52,7 +52,7 @@
                     @Html.EditorFor(modelItem => products[i].Price)<br />
                     @Html.ValidationMessageFor(modelItem => products[i].Price, "", new { @class = "text-danger" })
                 </td>
-                <td>@Html.DisplayFor(modelItem => products[i].Active)</td>
+                <td>@Html.EditorFor(modelItem => products[i].Active)</td>
                 <td>
                     @Html.EditorFor(modelItem => products[i].Stock)<br />
                     @Html.ValidationMessageFor(modelItem => products[i].Stock, "", new { @class = "text-danger" })
