@@ -22,6 +22,7 @@ namespace MVC5Course.Controllers
             var client = db.Client.Include(c => c.Occupation).OrderBy(p => p.ClientId);
             var data = client.ToPagedList(pageNumber: pageNo, pageSize: 10);
 
+            ViewBag.pageNO = pageNo;
             return View(data);
         }
 
@@ -86,7 +87,7 @@ namespace MVC5Course.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ClientId,FirstName,MiddleName,LastName,Gender,DateOfBirth,CreditRating,XCode,OccupationId,TelephoneNumber,Street1,Street2,City,ZipCode,Longitude,Latitude,Notes")] Client client)
+        public ActionResult Edit([Bind(Include = "ClientId,FirstName,MiddleName,LastName,Gender,DateOfBirth,CreditRating,XCode,OccupationId,TelephoneNumber,Street1,Street2,City,ZipCode,Longitude,Latitude,Notes")] Client client, int pageNO= 1)
         {
             if (ModelState.IsValid)
             {
@@ -94,11 +95,14 @@ namespace MVC5Course.Controllers
                 db.SaveChanges();
 
                 //return this.Index; 
-                return View("Index", db.Client.Include(c => c.Occupation).Take(5));
-                //return RedirectToAction("Index");
+                //return View("Index", db.Client.Include(c => c.Occupation).Take(5));
+                TempData["Msg"] = "更新資料成功\r\n您剛才的更新的是編號 " + client.ClientId + " 的資料";
+                return RedirectToAction("Index", new { pageNO = pageNO});
             }
             ViewBag.OccupationId = new SelectList(db.Occupation, "OccupationId", "OccupationName", client.OccupationId);
-            return View(client);
+            
+            return RedirectToAction("Index", new { pageNO = pageNO });
+            //return View(client);
         }
 
         // GET: Clients/Delete/5

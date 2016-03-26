@@ -13,6 +13,13 @@
 
 <h2>Index</h2>
 
+@if (TempData["Msg"]  != null) {
+    <script>
+        alert('@Ajax.JavaScriptStringEncode(Convert.ToString(TempData["Msg"]))');
+    </script>
+}
+
+
 <p>
     @Ajax.ActionLink("Create New", "Create", CommonAjaxOptions)
     <img id="Loading" src="~/Content/ajax-loader.gif" style="display:none" />
@@ -22,7 +29,8 @@
 @{
     var data = Model as IPagedList;
 }
-@Html.PagedListPager(data, p => Url.Action("Index", new { pageNO = p }))
+@Html.PagedListPager(data, p => Url.Action("Index", new { pageNO = p }), 
+    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing("#main"))
 <table class="table">
     <tr>
         <th>
@@ -80,6 +88,7 @@
 }
 </table>
 
-@Html.PagedListPager(data, p => Url.Action("Index", new { pageNO = p}))
+@Html.PagedListPager(data, p => Url.Action("Index", new { pageNO = p}), 
+    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing("#main"))
 
 <div id="Details"></div>

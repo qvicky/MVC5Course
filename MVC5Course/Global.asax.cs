@@ -23,6 +23,9 @@ namespace MVC5Course
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
 
+            //強迫回應JSON格式
+            GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
+
         }
     }
 }
